@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "ender-staff",
+	"version": "${version}",
+	"name": "Ender Staff",
+	"description": "A staff that teleports the player 8 blocks forward for 1 mana when right-clicked.",
+	"authors": [
+		{
+			"name": "CookedSeafood",
+			"contact": {
+				"homepage": "https://github.com/CookedSeafood"
+			}
+		}
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "GNU-GPL-3.0",
+	"icon": "assets/ender-staff/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.cookedseafood.enderstaff.EnderStaff"
+		]
+	},
+	"mixins": [
+		"ender-staff.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*",
+		"cardinal-components-base": ">=6.2.2",
+		"pentamana": ">=0.6.5"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
