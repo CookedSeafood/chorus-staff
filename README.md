@@ -28,4 +28,4 @@ Below is a template config file `config/ender-staff.json` filled with default va
 ```
 
 - `manaConsumption`: Mana consumption per use.
-- `teleportDistance`: 1 to 128, in blocks.
+- `teleportDistance`: 1 to 127, in blocks.
