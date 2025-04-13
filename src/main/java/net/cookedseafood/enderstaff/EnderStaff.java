@@ -11,8 +11,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -34,16 +37,22 @@ public class EnderStaff implements ModInitializer {
 
 	public static final byte VERSION_MAJOR = 1;
 	public static final byte VERSION_MINOR = 0;
-	public static final byte VERSION_PATCH = 2;
+	public static final byte VERSION_PATCH = 3;
 
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
 
 	public static final float MANA_CONSUMPTION = 1;
 	public static final byte TELEPORT_DISTANCE = 8;
+	public static final boolean IS_PARTICLE_VISIBLE = true;
+	public static final int PARTICLE_COUNT = 128;
+	public static final double PARTICLE_SPEED = 1.0;
 
 	public static float manaConsumption;
 	public static byte teleportDistance;
+	public static boolean isParticleVisible;
+	public static int particleCount;
+	public static double particleSpeed;
 
 	public static short teleportStep;
 
@@ -98,9 +107,38 @@ public class EnderStaff implements ModInitializer {
 				return ActionResult.FAIL;
 			}
 
-			player.teleport(player.getServer().getWorld(world.getRegistryKey()), blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, EnumSet.noneOf(PositionFlag.class), player.getYaw(), player.getPitch(), false);
+			if (isParticleVisible) {
+				spawnTeleportParticles((ServerWorld)world, player);
+			}
+			player.teleport(
+				player.getServer().getWorld(world.getRegistryKey()),
+				blockPos.getX() + 0.5,
+				blockPos.getY(),
+				blockPos.getZ() + 0.5,
+				EnumSet.noneOf(PositionFlag.class),
+				player.getYaw(),
+				player.getPitch(),
+				false
+			);
+			if (isParticleVisible) {
+				spawnTeleportParticles((ServerWorld)world, player);
+			}
 			return ActionResult.SUCCESS;
 		});
+	}
+
+	public static void spawnTeleportParticles(ServerWorld world, PlayerEntity player) {
+		world.spawnParticles(
+			ParticleTypes.PORTAL,
+			player.getParticleX(0.5),
+			player.getRandomBodyY() - 0.25,
+			player.getParticleZ(0.5),
+			particleCount,
+			(player.getRandom().nextDouble() - 0.5) * 2.0,
+			-player.getRandom().nextDouble(),
+			(player.getRandom().nextDouble() - 0.5) * 2.0,
+			particleSpeed
+		);
 	}
 
 	public static int reload() {
@@ -130,6 +168,27 @@ public class EnderStaff implements ModInitializer {
 			teleportDistance = TELEPORT_DISTANCE;
 		}
 
+		if (config.has("isParticleVisible")) {
+			isParticleVisible = config.get("isParticleVisible").getAsBoolean();
+			counter.increment();
+		} else {
+			isParticleVisible = IS_PARTICLE_VISIBLE;
+		}
+
+		if (config.has("particleCount")) {
+			particleCount = config.get("particleCount").getAsInt();
+			counter.increment();
+		} else {
+			particleCount = PARTICLE_COUNT;
+		}
+
+		if (config.has("particleSpeed")) {
+			particleSpeed = config.get("particleSpeed").getAsDouble();
+			counter.increment();
+		} else {
+			particleSpeed = PARTICLE_SPEED;
+		}
+
 		recalculate();
 		return counter.intValue();
 	}
@@ -137,6 +196,9 @@ public class EnderStaff implements ModInitializer {
 	public static void reset() {
 		manaConsumption = MANA_CONSUMPTION;
 		teleportDistance = TELEPORT_DISTANCE;
+		isParticleVisible = IS_PARTICLE_VISIBLE;
+		particleCount = PARTICLE_COUNT;
+		particleSpeed = PARTICLE_SPEED;
 	}
 
 	public static void recalculate() {

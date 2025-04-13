@@ -28,12 +28,12 @@
 		"ender-staff.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.10",
+		"fabricloader": ">=0.16.13",
 		"minecraft": "~1.21.4",
 		"java": ">=21",
 		"fabric-api": "*",
 		"cardinal-components-base": ">=6.2.2",
-		"pentamana": ">=0.6.5"
+		"pentamana": ">=0.6.7"
 	},
 	"suggests": {
 		"another-mod": "*"
