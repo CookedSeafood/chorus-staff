@@ -23,7 +23,10 @@ Below is a template config file `config/ender-staff.json` filled with default va
 ```json
 {
   "manaConsumption": 1,
-  "teleportDistance": 8
+  "teleportDistance": 8,
+  "isParticleVisible": true,
+  "particleCount": 128,
+  "particleSpeed": 1.0
 }
 ```
 
