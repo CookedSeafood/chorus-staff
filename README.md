@@ -1,16 +1,23 @@
 # Ender Staff
 
-Ender Staff is a staff that teleports the player 8 blocks forward for 1 mana when right-clicked. The teleport will end up at a block center before a block with collision or fluids is found.
+Ender Staff is a staff that teleports the player up to 8 blocks forward for 1 mana when right-clicked. The teleport will end up at a block center before a block with collision or fluids is found.
+
+## Feature
+
+- Lantency compentation.
+- Not move player if be fully blocked.
+
+## The item
 
 A "Ender Staff" is an item where `minecraft:item_name` is "Ender Staff".
 
-An example command to get it:
+An example command that gives the ender staff to yourslef:
 
 ```mcfunction
 /give @s diamond_sword[item_name="Ender Staff"]
 ```
 
-Get the original design of it:
+Another example command for the original design:
 
 ```mcfunction
 /give @s diamond_sword[item_model="minecraft:diamond_shovel",item_name="Ender Staff",rarity=rare]
@@ -25,7 +32,14 @@ Below is a template config file `config/ender-staff.json` filled with default va
   "manaConsumption": 1,
   "teleportDistance": 8,
   "isParticleVisible": true,
+  "particleXWidthScale": 0.5,
+  "particleYOffset": 0.25,
+  "particleZWidthScale": 0.5,
   "particleCount": 128,
+  "particleOffsetXOffset": 0.5,
+  "particleOffsetXMultiplier": 2.0,
+  "particleOffsetZOffset": 0.5,
+  "particleOffsetZMultiplier": 2.0,
   "particleSpeed": 1.0
 }
 ```
