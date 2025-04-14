@@ -4,10 +4,10 @@ Ender Staff is an item that teleports the player up to 8 blocks forward for 1 ma
 
 ## Feature
 
-- Lantency compentation.
+- Lantency compensation.
 - Not move player if be fully blocked.
 
-## The item
+## The Item
 
 A "Ender Staff" is an item where `minecraft:item_name` is "Ender Staff".
 
