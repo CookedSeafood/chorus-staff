@@ -40,7 +40,9 @@ Below is a template config file `config/ender-staff.json` filled with default va
   "particleOffsetXMultiplier": 2.0,
   "particleOffsetZOffset": 0.5,
   "particleOffsetZMultiplier": 2.0,
-  "particleSpeed": 1.0
+  "particleSpeed": 1.0,
+  "isLantencyCompensation": true,
+  "maxLantencyCompensationPredictMilliseconds": 200
 }
 ```
 
