@@ -11,7 +11,7 @@ Ender Staff is an item that teleports the player up to 8 blocks forward for 1 ma
 
 An item where `minecraft:item_name` is "Ender Staff" is considered as an ender staff.
 
-An example command that gives the ender staff to yourslef:
+An example command that gives an ender staff to yourslef:
 
 ```mcfunction
 /give @s diamond_sword[item_name="Ender Staff"]
