@@ -3,7 +3,7 @@
 	"id": "ender-staff",
 	"version": "${version}",
 	"name": "Ender Staff",
-	"description": "A staff that teleports the player 8 blocks forward for 1 mana when right-clicked.",
+	"description": "An item that teleports the player up to 8 blocks forward for 1 mana when right-clicked.",
 	"authors": [
 		{
 			"name": "CookedSeafood",

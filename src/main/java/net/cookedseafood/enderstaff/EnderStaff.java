@@ -38,7 +38,7 @@ public class EnderStaff implements ModInitializer {
 
 	public static final byte VERSION_MAJOR = 1;
 	public static final byte VERSION_MINOR = 0;
-	public static final byte VERSION_PATCH = 4;
+	public static final byte VERSION_PATCH = 5;
 
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
@@ -55,8 +55,8 @@ public class EnderStaff implements ModInitializer {
 	public static final double PARTICLE_OFFSET_Z_OFFSET = 0.5;
 	public static final double PARTICLE_OFFSET_Z_MULTIPLIER = 2.0;
 	public static final double PARTICLE_SPEED = 1.0;
-	public static final boolean IS_LANTENCY_COMPENTATION = true;
-	public static final int MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS = 200;
+	public static final boolean IS_LANTENCY_COMPENSATION = true;
+	public static final int MAX_LANTENCY_COMPENSATION_PREDICT_MILLISECONDS = 200;
 
 	public static float manaConsumption;
 	public static byte teleportDistance;
@@ -70,8 +70,8 @@ public class EnderStaff implements ModInitializer {
 	public static double particleOffsetZOffset;
 	public static double particleOffsetZMultiplier;
 	public static double particleSpeed;
-	public static boolean isLantencyCompentation;
-	public static int maxLantencyCompentationPredictMilliseconds;
+	public static boolean isLantencyCompensation;
+	public static int maxLantencyCompensationPredictMilliseconds;
 
 	public static short teleportStep;
 
@@ -147,8 +147,8 @@ public class EnderStaff implements ModInitializer {
 			spawnTeleportParticles(world, entity);
 		}
 
-		if (entity instanceof ServerPlayerEntity && isLantencyCompentation) {
-			float predictTicks = Math.max(((ServerPlayerEntity)entity).networkHandler.getLatency(), maxLantencyCompentationPredictMilliseconds) / 50;
+		if (entity instanceof ServerPlayerEntity && isLantencyCompensation) {
+			float predictTicks = Math.max(((ServerPlayerEntity)entity).networkHandler.getLatency(), maxLantencyCompensationPredictMilliseconds) / 50;
 			entity.teleport(
 				entity.getServer().getWorld(world.getRegistryKey()),
 				blockPos.getX() + 0.5 + entity.getXDelta() * predictTicks,
@@ -290,18 +290,18 @@ public class EnderStaff implements ModInitializer {
 			particleSpeed = PARTICLE_SPEED;
 		}
 
-		if (config.has("isLantencyCompentation")) {
-			isLantencyCompentation = config.get("isLantencyCompentation").getAsBoolean();
+		if (config.has("isLantencyCompensation")) {
+			isLantencyCompensation = config.get("isLantencyCompensation").getAsBoolean();
 			counter.increment();
 		} else {
-			isLantencyCompentation = IS_LANTENCY_COMPENTATION;
+			isLantencyCompensation = IS_LANTENCY_COMPENSATION;
 		}
 
-		if (config.has("maxLantencyCompentationPredictMilliseconds")) {
-			maxLantencyCompentationPredictMilliseconds = config.get("maxLantencyCompentationPredictMilliseconds").getAsInt();
+		if (config.has("maxLantencyCompensationPredictMilliseconds")) {
+			maxLantencyCompensationPredictMilliseconds = config.get("maxLantencyCompensationPredictMilliseconds").getAsInt();
 			counter.increment();
 		} else {
-			maxLantencyCompentationPredictMilliseconds = MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS;
+			maxLantencyCompensationPredictMilliseconds = MAX_LANTENCY_COMPENSATION_PREDICT_MILLISECONDS;
 		}
 
 		recalculate();
@@ -321,11 +321,11 @@ public class EnderStaff implements ModInitializer {
 		particleOffsetZOffset = PARTICLE_OFFSET_Z_OFFSET;
 		particleOffsetZMultiplier = PARTICLE_OFFSET_Z_MULTIPLIER;
 		particleSpeed = PARTICLE_SPEED;
-		isLantencyCompentation = IS_LANTENCY_COMPENTATION;
-		maxLantencyCompentationPredictMilliseconds = MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS;
+		isLantencyCompensation = IS_LANTENCY_COMPENSATION;
+		maxLantencyCompensationPredictMilliseconds = MAX_LANTENCY_COMPENSATION_PREDICT_MILLISECONDS;
 	}
 
 	public static void recalculate() {
-		teleportStep = (short) (teleportDistance * STEP_PER_DISTANCE);
+		teleportStep = (short)(teleportDistance * STEP_PER_DISTANCE);
 	}
 }
