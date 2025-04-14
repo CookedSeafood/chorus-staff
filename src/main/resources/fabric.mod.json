@@ -33,7 +33,8 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"cardinal-components-base": ">=6.2.2",
-		"pentamana": ">=0.6.7"
+		"candy-wrapper": ">=0.5.5",
+		"pentamana": ">=0.6.8"
 	},
 	"suggests": {
 		"another-mod": "*"

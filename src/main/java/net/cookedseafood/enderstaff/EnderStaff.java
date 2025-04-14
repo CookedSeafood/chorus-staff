@@ -11,10 +11,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -37,7 +38,7 @@ public class EnderStaff implements ModInitializer {
 
 	public static final byte VERSION_MAJOR = 1;
 	public static final byte VERSION_MINOR = 0;
-	public static final byte VERSION_PATCH = 3;
+	public static final byte VERSION_PATCH = 4;
 
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
@@ -45,14 +46,32 @@ public class EnderStaff implements ModInitializer {
 	public static final float MANA_CONSUMPTION = 1;
 	public static final byte TELEPORT_DISTANCE = 8;
 	public static final boolean IS_PARTICLE_VISIBLE = true;
+	public static final double PARTICLE_X_WIDTH_SCALE = 0.5;
+	public static final double PARTICLE_Y_OFFSET = 0.25;
+	public static final double PARTICLE_Z_WIDTH_SCALE = 0.5;
 	public static final int PARTICLE_COUNT = 128;
+	public static final double PARTICLE_OFFSET_X_OFFSET = 0.5;
+	public static final double PARTICLE_OFFSET_X_MULTIPLIER = 2.0;
+	public static final double PARTICLE_OFFSET_Z_OFFSET = 0.5;
+	public static final double PARTICLE_OFFSET_Z_MULTIPLIER = 2.0;
 	public static final double PARTICLE_SPEED = 1.0;
+	public static final boolean IS_LANTENCY_COMPENTATION = true;
+	public static final int MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS = 200;
 
 	public static float manaConsumption;
 	public static byte teleportDistance;
 	public static boolean isParticleVisible;
+	public static double particleXWidthScale;
+	public static double particleYOffset;
+	public static double particleZWidthScale;
 	public static int particleCount;
+	public static double particleOffsetXOffset;
+	public static double particleOffsetXMultiplier;
+	public static double particleOffsetZOffset;
+	public static double particleOffsetZMultiplier;
 	public static double particleSpeed;
+	public static boolean isLantencyCompentation;
+	public static int maxLantencyCompentationPredictMilliseconds;
 
 	public static short teleportStep;
 
@@ -84,59 +103,92 @@ public class EnderStaff implements ModInitializer {
 				return ActionResult.FAIL;
 			}
 
-			Vec3d pos = player.getEyePos();
-			Vec3d delta = Vec3d.fromPolar(player.getPitch(), player.getYaw()).multiply(DISTANCE_PER_STEP);
-			BlockPos blockPos = BlockPos.ofFloored(pos);
-			BlockPos startBlockPos = blockPos;
+			usedBy((ServerPlayerEntity)player, (ServerWorld)world);
 
-			for (short step = 0; step < teleportStep; ++step) {
-				pos = pos.add(delta);
-				BlockPos nextBlockPos = BlockPos.ofFloored(pos);
-				if (blockPos.equals(nextBlockPos)) {
-					continue;
-				}
-
-				if (!world.getBlockState(nextBlockPos).getCollisionShape(world, nextBlockPos).isEmpty() || !world.getFluidState(nextBlockPos).isEmpty()) {
-					break;
-				}
-
-				blockPos = nextBlockPos;
-			}
-
-			if (blockPos.equals(startBlockPos)) {
-				return ActionResult.FAIL;
-			}
-
-			if (isParticleVisible) {
-				spawnTeleportParticles((ServerWorld)world, player);
-			}
-			player.teleport(
-				player.getServer().getWorld(world.getRegistryKey()),
-				blockPos.getX() + 0.5,
-				blockPos.getY(),
-				blockPos.getZ() + 0.5,
-				EnumSet.noneOf(PositionFlag.class),
-				player.getYaw(),
-				player.getPitch(),
-				false
-			);
-			if (isParticleVisible) {
-				spawnTeleportParticles((ServerWorld)world, player);
-			}
 			return ActionResult.SUCCESS;
 		});
 	}
 
-	public static void spawnTeleportParticles(ServerWorld world, PlayerEntity player) {
+	/**
+	 * Teleport the entity up to 8 blocks forward. The teleport will end up at a block center
+	 * before a block with collision or fluids is found.
+	 * 
+	 * <p>The entity will NOT be teleported if the destination blockPos equals current blockPos.
+	 * 
+	 * @param entity
+	 * @param world
+	 * @return true if the entity was teleported.
+	 */
+	public static boolean usedBy(Entity entity, ServerWorld world) {
+		Vec3d pos = entity.getEyePos();
+		Vec3d delta = Vec3d.fromPolar(entity.getPitch(), entity.getYaw()).multiply(DISTANCE_PER_STEP);
+		BlockPos blockPos = BlockPos.ofFloored(pos);
+		BlockPos startBlockPos = blockPos;
+
+		for (short step = 0; step < teleportStep; ++step) {
+			pos = pos.add(delta);
+			BlockPos nextBlockPos = BlockPos.ofFloored(pos);
+			if (blockPos.equals(nextBlockPos)) {
+				continue;
+			}
+
+			if (!world.getBlockState(nextBlockPos).getCollisionShape(world, nextBlockPos).isEmpty() || !world.getFluidState(nextBlockPos).isEmpty()) {
+				break;
+			}
+
+			blockPos = nextBlockPos;
+		}
+
+		if (blockPos.equals(startBlockPos)) {
+			return false;
+		}
+
+		if (isParticleVisible) {
+			spawnTeleportParticles(world, entity);
+		}
+
+		if (entity instanceof ServerPlayerEntity && isLantencyCompentation) {
+			float predictTicks = Math.max(((ServerPlayerEntity)entity).networkHandler.getLatency(), maxLantencyCompentationPredictMilliseconds) / 50;
+			entity.teleport(
+				entity.getServer().getWorld(world.getRegistryKey()),
+				blockPos.getX() + 0.5 + entity.getXDelta() * predictTicks,
+				blockPos.getY() + entity.getYDelta() * predictTicks,
+				blockPos.getZ() + 0.5 + entity.getZDelta() * predictTicks,
+				EnumSet.noneOf(PositionFlag.class),
+				entity.getYaw() + entity.getYawDelta() * predictTicks,
+				entity.getPitch() + entity.getPitchDelta() * predictTicks,
+				false
+			);
+		} else {
+			entity.teleport(
+				entity.getServer().getWorld(world.getRegistryKey()),
+				blockPos.getX() + 0.5,
+				blockPos.getY(),
+				blockPos.getZ() + 0.5,
+				EnumSet.noneOf(PositionFlag.class),
+				entity.getYaw(),
+				entity.getPitch(),
+				false
+			);
+		}
+
+		if (isParticleVisible) {
+			spawnTeleportParticles(world, entity);
+		}
+
+		return true;
+	}
+
+	public static void spawnTeleportParticles(ServerWorld world, Entity entity) {
 		world.spawnParticles(
 			ParticleTypes.PORTAL,
-			player.getParticleX(0.5),
-			player.getRandomBodyY() - 0.25,
-			player.getParticleZ(0.5),
+			entity.getParticleX(particleXWidthScale),
+			entity.getRandomBodyY() - particleYOffset,
+			entity.getParticleZ(particleZWidthScale),
 			particleCount,
-			(player.getRandom().nextDouble() - 0.5) * 2.0,
-			-player.getRandom().nextDouble(),
-			(player.getRandom().nextDouble() - 0.5) * 2.0,
+			(entity.getRandom().nextDouble() - particleOffsetXOffset) * particleOffsetXMultiplier,
+			-entity.getRandom().nextDouble(),
+			(entity.getRandom().nextDouble() - particleOffsetZOffset) * particleOffsetZMultiplier,
 			particleSpeed
 		);
 	}
@@ -175,6 +227,27 @@ public class EnderStaff implements ModInitializer {
 			isParticleVisible = IS_PARTICLE_VISIBLE;
 		}
 
+		if (config.has("particleXWidthScale")) {
+			particleXWidthScale = config.get("particleXWidthScale").getAsDouble();
+			counter.increment();
+		} else {
+			particleXWidthScale = PARTICLE_X_WIDTH_SCALE;
+		}
+
+		if (config.has("particleYOffset")) {
+			particleYOffset = config.get("particleYOffset").getAsDouble();
+			counter.increment();
+		} else {
+			particleYOffset = PARTICLE_Y_OFFSET;
+		}
+
+		if (config.has("particleZWidthScale")) {
+			particleZWidthScale = config.get("particleZWidthScale").getAsDouble();
+			counter.increment();
+		} else {
+			particleZWidthScale = PARTICLE_Z_WIDTH_SCALE;
+		}
+
 		if (config.has("particleCount")) {
 			particleCount = config.get("particleCount").getAsInt();
 			counter.increment();
@@ -182,11 +255,53 @@ public class EnderStaff implements ModInitializer {
 			particleCount = PARTICLE_COUNT;
 		}
 
+		if (config.has("particleOffsetXOffset")) {
+			particleOffsetXOffset = config.get("particleOffsetXOffset").getAsDouble();
+			counter.increment();
+		} else {
+			particleOffsetXOffset = PARTICLE_OFFSET_X_OFFSET;
+		}
+
+		if (config.has("particleOffsetXMultiplier")) {
+			particleOffsetXMultiplier = config.get("particleOffsetXMultiplier").getAsDouble();
+			counter.increment();
+		} else {
+			particleOffsetXMultiplier = PARTICLE_OFFSET_X_MULTIPLIER;
+		}
+
+		if (config.has("particleOffsetZOffset")) {
+			particleOffsetZOffset = config.get("particleOffsetZOffset").getAsDouble();
+			counter.increment();
+		} else {
+			particleOffsetZOffset = PARTICLE_OFFSET_Z_OFFSET;
+		}
+
+		if (config.has("particleOffsetZMultiplier")) {
+			particleOffsetZMultiplier = config.get("particleOffsetZMultiplier").getAsDouble();
+			counter.increment();
+		} else {
+			particleOffsetZMultiplier = PARTICLE_OFFSET_Z_MULTIPLIER;
+		}
+
 		if (config.has("particleSpeed")) {
 			particleSpeed = config.get("particleSpeed").getAsDouble();
 			counter.increment();
 		} else {
 			particleSpeed = PARTICLE_SPEED;
+		}
+
+		if (config.has("isLantencyCompentation")) {
+			isLantencyCompentation = config.get("isLantencyCompentation").getAsBoolean();
+			counter.increment();
+		} else {
+			isLantencyCompentation = IS_LANTENCY_COMPENTATION;
+		}
+
+		if (config.has("maxLantencyCompentationPredictMilliseconds")) {
+			maxLantencyCompentationPredictMilliseconds = config.get("maxLantencyCompentationPredictMilliseconds").getAsInt();
+			counter.increment();
+		} else {
+			maxLantencyCompentationPredictMilliseconds = MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS;
 		}
 
 		recalculate();
@@ -197,8 +312,17 @@ public class EnderStaff implements ModInitializer {
 		manaConsumption = MANA_CONSUMPTION;
 		teleportDistance = TELEPORT_DISTANCE;
 		isParticleVisible = IS_PARTICLE_VISIBLE;
+		particleXWidthScale = PARTICLE_X_WIDTH_SCALE;
+		particleYOffset = PARTICLE_Y_OFFSET;
+		particleZWidthScale = PARTICLE_Z_WIDTH_SCALE;
 		particleCount = PARTICLE_COUNT;
+		particleOffsetXOffset = PARTICLE_OFFSET_X_OFFSET;
+		particleOffsetXMultiplier = PARTICLE_OFFSET_X_MULTIPLIER;
+		particleOffsetZOffset = PARTICLE_OFFSET_Z_OFFSET;
+		particleOffsetZMultiplier = PARTICLE_OFFSET_Z_MULTIPLIER;
 		particleSpeed = PARTICLE_SPEED;
+		isLantencyCompentation = IS_LANTENCY_COMPENTATION;
+		maxLantencyCompentationPredictMilliseconds = MAX_LANTENCY_COMPENTATION_PREDICT_MILLISECONDS;
 	}
 
 	public static void recalculate() {
