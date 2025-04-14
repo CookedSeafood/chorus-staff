@@ -9,7 +9,7 @@ Ender Staff is an item that teleports the player up to 8 blocks forward for 1 ma
 
 ## The Item
 
-A "Ender Staff" is an item where `minecraft:item_name` is "Ender Staff".
+An item where `minecraft:item_name` is "Ender Staff" is considered as an ender staff.
 
 An example command that gives the ender staff to yourslef:
 
