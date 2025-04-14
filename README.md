@@ -1,6 +1,6 @@
 # Ender Staff
 
-Ender Staff is a staff that teleports the player up to 8 blocks forward for 1 mana when right-clicked. The teleport will end up at a block center before a block with collision or fluids is found.
+Ender Staff is an item that teleports the player up to 8 blocks forward for 1 mana when right-clicked. The teleport will end up at a block center before a block with collision or fluids is found.
 
 ## Feature
 
