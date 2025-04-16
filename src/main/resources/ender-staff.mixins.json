@@ -2,9 +2,7 @@
 	"required": true,
 	"package": "net.cookedseafood.enderstaff.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-
-	],
+	"mixins": [],
 	"injectors": {
 		"defaultRequire": 1
 	}

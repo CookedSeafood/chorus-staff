@@ -37,8 +37,8 @@ public class EnderStaff implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final byte VERSION_MAJOR = 1;
-	public static final byte VERSION_MINOR = 0;
-	public static final byte VERSION_PATCH = 5;
+	public static final byte VERSION_MINOR = 1;
+	public static final byte VERSION_PATCH = 0;
 
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
@@ -91,7 +91,7 @@ public class EnderStaff implements ModInitializer {
 			}
 
 			ItemStack stack = player.getMainHandStack();
-			if (!"Ender Staff".equals(stack.getItemName().getString())) {
+			if (!"ender-staff".equals(stack.getCustomId())) {
 				return ActionResult.PASS;
 			}
 
