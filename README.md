@@ -9,18 +9,18 @@ Ender Staff is an item that teleports the player up to 8 blocks forward for 1 ma
 
 ## The Item
 
-An item where `minecraft:item_name` is "Ender Staff" is considered as an ender staff.
+An item where `minecraft:custom_data/id` is "ender-staff" is considered as an ender staff.
 
 An example command that gives an ender staff to yourslef:
 
 ```mcfunction
-/give @s diamond_sword[item_name="Ender Staff"]
+/give @s diamond_sword[custom_data={id:"ender-staff"}]
 ```
 
 Another example command for the original design:
 
 ```mcfunction
-/give @s diamond_sword[item_model="minecraft:diamond_shovel",item_name="Ender Staff",rarity=rare]
+/give @s diamond_sword[custom_data={id:"ender-staff"},item_model="minecraft:diamond_shovel",rarity=rare]
 ```
 
 ## Configuration
