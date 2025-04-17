@@ -19,6 +19,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.apache.commons.io.FileUtils;
@@ -37,9 +38,11 @@ public class EnderStaff implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final byte VERSION_MAJOR = 1;
-	public static final byte VERSION_MINOR = 1;
+	public static final byte VERSION_MINOR = 2;
 	public static final byte VERSION_PATCH = 0;
 
+	public static final String MOD_NAMESPACE = "ender_staff";
+	public static final String ENDER_STAFF_CUSTOM_ID = Identifier.of(MOD_NAMESPACE, "ender_staff").toString();
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
 
@@ -91,7 +94,7 @@ public class EnderStaff implements ModInitializer {
 			}
 
 			ItemStack stack = player.getMainHandStack();
-			if (!"ender-staff".equals(stack.getCustomId())) {
+			if (!ENDER_STAFF_CUSTOM_ID.equals(stack.getCustomId())) {
 				return ActionResult.PASS;
 			}
 
