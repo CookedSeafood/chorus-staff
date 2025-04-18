@@ -13,8 +13,8 @@
 		}
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/ender-staff",
+		"sources": "https://github.com/CookedSeafood/ender-staff"
 	},
 	"license": "GNU-GPL-3.0",
 	"icon": "assets/ender-staff/icon.png",

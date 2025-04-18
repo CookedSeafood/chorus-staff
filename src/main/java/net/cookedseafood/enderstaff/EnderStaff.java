@@ -39,7 +39,7 @@ public class EnderStaff implements ModInitializer {
 
 	public static final byte VERSION_MAJOR = 1;
 	public static final byte VERSION_MINOR = 2;
-	public static final byte VERSION_PATCH = 0;
+	public static final byte VERSION_PATCH = 1;
 
 	public static final String MOD_NAMESPACE = "ender_staff";
 	public static final String ENDER_STAFF_CUSTOM_ID = Identifier.of(MOD_NAMESPACE, "ender_staff").toString();
