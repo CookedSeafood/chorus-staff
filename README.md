@@ -20,7 +20,7 @@ An example command that gives an ender staff to yourslef:
 Another example command for the original design:
 
 ```mcfunction
-/give @s diamond_sword[custom_data={id:"ender_staff:ender_staff"},item_name="Ender Staff",item_model="minecraft:diamond_shovel",rarity=rare]
+/give @s diamond_sword[custom_data={id:"ender_staff:ender_staff"},item_name='{"text":"Ender Staff"}',item_model="minecraft:diamond_shovel",rarity=rare]
 ```
 
 ## Configuration
