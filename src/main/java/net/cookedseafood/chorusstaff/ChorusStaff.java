@@ -1,10 +1,10 @@
-package net.cookedseafood.enderstaff;
+package net.cookedseafood.chorusstaff;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
-import net.cookedseafood.enderstaff.command.EnderStaffCommand;
+import net.cookedseafood.chorusstaff.command.ChorusStaffCommand;
 import net.cookedseafood.pentamana.component.ManaPreferenceComponentInstance;
 import net.cookedseafood.pentamana.component.ServerManaBarComponentInstance;
 import net.fabricmc.api.ModInitializer;
@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class EnderStaff implements ModInitializer {
-	public static final String MOD_ID = "ender-staff";
+public class ChorusStaff implements ModInitializer {
+	public static final String MOD_ID = "chorus-staff";
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
@@ -38,11 +38,11 @@ public class EnderStaff implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final byte VERSION_MAJOR = 1;
-	public static final byte VERSION_MINOR = 2;
-	public static final byte VERSION_PATCH = 1;
+	public static final byte VERSION_MINOR = 3;
+	public static final byte VERSION_PATCH = 0;
 
-	public static final String MOD_NAMESPACE = "ender_staff";
-	public static final String ENDER_STAFF_CUSTOM_ID = Identifier.of(MOD_NAMESPACE, "ender_staff").toString();
+	public static final String MOD_NAMESPACE = "chorus_staff";
+	public static final String CHORUS_STAFF_CUSTOM_ID = Identifier.of(MOD_NAMESPACE, "chorus_staff").toString();
 	public static final short STEP_PER_DISTANCE = Short.MIN_VALUE / Byte.MIN_VALUE;
 	public static final double DISTANCE_PER_STEP = 1.0 / STEP_PER_DISTANCE;
 
@@ -84,7 +84,7 @@ public class EnderStaff implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> EnderStaffCommand.register(dispatcher, registryAccess));
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ChorusStaffCommand.register(dispatcher, registryAccess));
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> reload());
 
@@ -94,7 +94,7 @@ public class EnderStaff implements ModInitializer {
 			}
 
 			ItemStack stack = player.getMainHandStack();
-			if (!ENDER_STAFF_CUSTOM_ID.equals(stack.getCustomId())) {
+			if (!CHORUS_STAFF_CUSTOM_ID.equals(stack.getCustomId())) {
 				return ActionResult.PASS;
 			}
 
@@ -199,7 +199,7 @@ public class EnderStaff implements ModInitializer {
 	public static int reload() {
 		String configString;
 		try {
-			configString = FileUtils.readFileToString(new File("./config/ender-staff.json"), StandardCharsets.UTF_8);
+			configString = FileUtils.readFileToString(new File("./config/chorus-staff.json"), StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			reset();
 			recalculate();

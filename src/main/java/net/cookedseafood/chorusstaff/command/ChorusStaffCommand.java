@@ -1,19 +1,16 @@
-package net.cookedseafood.enderstaff.command;
+package net.cookedseafood.chorusstaff.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.cookedseafood.enderstaff.EnderStaff;
+import net.cookedseafood.chorusstaff.ChorusStaff;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-public class EnderStaffCommand {
-	public EnderStaffCommand() {
-	}
-
+public class ChorusStaffCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
 		dispatcher.register(
-			CommandManager.literal("enderstaff")
+			CommandManager.literal("chorusstaff")
 			.then(
 				CommandManager.literal("reload")
 				.requires(source -> source.hasPermissionLevel(2))
@@ -27,12 +24,12 @@ public class EnderStaffCommand {
 	}
 
 	public static int executeReload(ServerCommandSource source) {
-		source.sendFeedback(() -> Text.literal("Reloading Ender Staff!"), true);
-		return EnderStaff.reload();
+		source.sendFeedback(() -> Text.literal("Reloading Chorus Staff!"), true);
+		return ChorusStaff.reload();
 	}
 
 	public static int executeVersion(ServerCommandSource source) {
-		source.sendFeedback(() -> Text.literal("Ender Staff " + EnderStaff.VERSION_MAJOR + "." + EnderStaff.VERSION_MINOR + "." + EnderStaff.VERSION_PATCH), false);
+		source.sendFeedback(() -> Text.literal("Chorus Staff " + ChorusStaff.VERSION_MAJOR + "." + ChorusStaff.VERSION_MINOR + "." + ChorusStaff.VERSION_PATCH), false);
 		return 0;
 	}
 }
