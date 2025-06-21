@@ -9,7 +9,7 @@ Chorus Staff is an item that teleports the player up to 8 blocks forward for 1 m
 
 ## The Item
 
-An item where `minecraft:custom_data/id` is "chorus_staff:chorus_staff" is considered as an chorus staff.
+An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is considered as an chorus staff.
 
 An example command that gives an chorus staff to yourslef:
 
@@ -20,7 +20,7 @@ An example command that gives an chorus staff to yourslef:
 Another example command for the original design:
 
 ```mcfunction
-/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name='{"text":"Chorus Staff"}',item_model="minecraft:diamond_shovel",rarity=rare]
+/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={"text":"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity=rare]
 ```
 
 ## Configuration
@@ -41,10 +41,15 @@ Below is a template config file `config/chorus-staff.json` filled with default v
   "particleOffsetZOffset": 0.5,
   "particleOffsetZMultiplier": 2.0,
   "particleSpeed": 1.0,
-  "isLantencyCompensation": true,
+  "shouldLantencyCompensation": true,
   "maxLantencyCompensationPredictMilliseconds": 200
 }
 ```
 
-- `manaConsumption`: Mana consumption per use.
-- `teleportDistance`: 1 to 127, in blocks.
+### `manaConsumption`
+
+Mana consumption per use.
+
+### `teleportDistance`
+
+1 to 127 in blocks.

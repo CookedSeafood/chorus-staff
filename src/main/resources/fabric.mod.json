@@ -1,42 +1,41 @@
 {
-	"schemaVersion": 1,
-	"id": "chorus-staff",
-	"version": "${version}",
-	"name": "Chorus Staff",
-	"description": "An item that teleports the player up to 8 blocks forward for 1 mana when right-clicked.",
-	"authors": [
-		{
-			"name": "CookedSeafood",
-			"contact": {
-				"homepage": "https://github.com/CookedSeafood"
-			}
-		}
-	],
-	"contact": {
-		"homepage": "https://modrinth.com/mod/chorus-staff",
-		"sources": "https://github.com/CookedSeafood/chorus-staff"
-	},
-	"license": "GNU-GPL-3.0",
-	"icon": "assets/chorus-staff/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"net.cookedseafood.chorusstaff.ChorusStaff"
-		]
-	},
-	"mixins": [
-		"chorus-staff.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.4",
-		"java": ">=21",
-		"fabric-api": "*",
-		"cardinal-components-base": ">=6.2.2",
-		"candy-wrapper": ">=0.5.12",
-		"pentamana": ">=0.6.9"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+    "schemaVersion": 1,
+    "id": "chorus-staff",
+    "version": "${version}",
+    "name": "Chorus Staff",
+    "description": "An item that teleports the player up to 8 blocks forward for 1 mana when right-clicked.",
+    "authors": [
+        {
+            "name": "CookedSeafood",
+            "contact": {
+                "homepage": "https://github.com/CookedSeafood"
+            }
+        }
+    ],
+    "contact": {
+        "homepage": "https://modrinth.com/mod/chorus-staff",
+        "sources": "https://github.com/CookedSeafood/chorus-staff"
+    },
+    "license": "GNU-GPL-3.0",
+    "icon": "assets/chorus-staff/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.cookedseafood.chorusstaff.ChorusStaff"
+        ]
+    },
+    "mixins": [
+        "chorus-staff.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.16.14",
+        "minecraft": "~1.21.5",
+        "java": ">=21",
+        "fabric-api": "*",
+        "candy-wrapper": ">=0.7.4",
+        "pentamana": ">=0.8.0"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
 }
