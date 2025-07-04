@@ -4,6 +4,7 @@ Chorus Staff is an item that teleports the player up to 8 blocks forward for 1 m
 
 ## Feature
 
+- Teleport to block center.
 - Lantency compensation.
 - Not move player if be fully blocked.
 
