@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.particle.ParticleTypes;
@@ -30,7 +31,7 @@ public class ChorusStaff implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final byte VERSION_MAJOR = 1;
-    public static final byte VERSION_MINOR = 4;
+    public static final byte VERSION_MINOR = 5;
     public static final byte VERSION_PATCH = 0;
 
     public static final String MOD_NAMESPACE = "chorus_staff";
@@ -58,12 +59,7 @@ public class ChorusStaff implements ModInitializer {
                 return ActionResult.PASS;
             }
 
-            if (!player.consumMana(ChorusStaffConfig.manaConsumption)) {
-                return ActionResult.FAIL;
-            }
-
-            usedBy((ServerPlayerEntity)player, (ServerWorld)world);
-            return ActionResult.SUCCESS;
+            return usedBy((ServerPlayerEntity)player, (ServerWorld)world) ? ActionResult.SUCCESS : ActionResult.FAIL;
         });
     }
 
@@ -77,7 +73,11 @@ public class ChorusStaff implements ModInitializer {
      * @param world
      * @return {@code true} if the entity was teleported
      */
-    public static boolean usedBy(Entity entity, ServerWorld world) {
+    public static boolean usedBy(LivingEntity entity, ServerWorld world) {
+        if (!entity.consumMana(ChorusStaffConfig.manaConsumption)) {
+            return false;
+        }
+
         Vec3d pos = entity.getEyePos();
         Vec3d delta = Vec3d.fromPolar(entity.getPitch(), entity.getYaw()).multiply(DISTANCE_PER_STEP);
         BlockPos blockPos = BlockPos.ofFloored(pos);

@@ -32,8 +32,9 @@
         "minecraft": "~1.21.5",
         "java": ">=21",
         "fabric-api": "*",
-        "candy-wrapper": ">=0.7.4",
-        "pentamana": ">=0.8.0"
+        "candy-wrapper": ">=0.7.5",
+        "general-custom-data": ">=0.1.5",
+        "pentamana": ">=0.8.2"
     },
     "suggests": {
         "another-mod": "*"

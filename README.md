@@ -21,7 +21,7 @@ An example command that gives an chorus staff to yourslef:
 Another example command for the original design:
 
 ```mcfunction
-/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity=rare]
+/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="diamond_shovel",rarity="rare"]
 ```
 
 ## Configuration
