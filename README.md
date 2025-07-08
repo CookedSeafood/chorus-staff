@@ -30,7 +30,7 @@ Below is a template config file `config/chorus-staff.json` filled with default v
 
 ```json
 {
-  "manaConsumption": 1,
+  "manaConsumption": 1.0,
   "teleportDistance": 8,
   "isParticleVisible": true,
   "particleXWidthScale": 0.5,
