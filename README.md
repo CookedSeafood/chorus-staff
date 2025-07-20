@@ -1,27 +1,65 @@
 # Chorus Staff
 
-Chorus Staff is an item that teleports the player up to 8 blocks forward for 1 mana when right-clicked. The teleport will end up at a block center before a block with collision or fluids is found.
+A **chorus staff** is a casting utility that is used to teleport the caster forward.
 
-## Feature
+| Statistics ||
+| - | - |
+| Melee Damage | 7 |
+| Mana Consumption| 1 |
+| Rarity | Rare |
 
-- Teleport to block center.
-- Lantency compensation.
-- Not move player if be fully blocked.
+## Usage
 
-## The Item
+### Melee Attack
+
+Same as a [diamond sword](https://minecraft.wiki/w/Diamond_Sword).
+
+### Teleport
+
+Pressing use while holding a chorus staff in main hand teleports the player up to 8 blocks forward and consumes 1 mana. The teleport will end up at a block center before a block with collision or fluids is found.
+
+#### Mana Consumption with Ultilization
+
+| Base Mana Consumption | Utilization I | Utilization II | Utilization III | Utilization IV | Utilization V |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| 1.0 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5 |
+
+## Data Powered
 
 An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is considered as an chorus staff.
 
-An example command that gives an chorus staff to yourslef:
+### Give Command
 
 ```mcfunction
-/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"}]
+/give @s minecraft:diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity="rare"]
 ```
 
-Another example command for the original design:
+### Loot Table Entry
 
-```mcfunction
-/give @s diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="diamond_shovel",rarity="rare"]
+```json
+{
+    "type": "minecraft:item",
+    "functions": [
+        {
+            "function": "minecraft:set_components",
+            "components": {
+            "minecraft:custom_data": {
+                "id": "chorus_staff:chorus_staff"
+            },
+            "minecraft:item_model": "minecraft:diamond_shovel",
+            "minecraft:rarity": "rare"
+            }
+        },
+        {
+            "function": "minecraft:set_name",
+            "name": {
+                "text": "Chorus Staff"
+            },
+            "target": "item_name"
+        }
+    ],
+    "name": "minecraft:diamond_sword"
+}
 ```
 
 ## Configuration
@@ -46,10 +84,6 @@ Below is a template config file `config/chorus-staff.json` filled with default v
   "maxLantencyCompensationPredictMilliseconds": 200
 }
 ```
-
-### `manaConsumption`
-
-Mana consumption per use.
 
 ### `teleportDistance`
 

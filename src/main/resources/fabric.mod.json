@@ -3,7 +3,7 @@
     "id": "chorus-staff",
     "version": "${version}",
     "name": "Chorus Staff",
-    "description": "An item that teleports the player up to 8 blocks forward for 1 mana when right-clicked.",
+    "description": "A casting utility that is used to teleport the caster forward.",
     "authors": [
         {
             "name": "CookedSeafood",
