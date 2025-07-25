@@ -4,15 +4,10 @@ A **chorus staff** is a casting utility that is used to teleport the caster forw
 
 | Statistics ||
 | - | - |
-| Melee Damage | 7 |
 | Mana Consumption| 1 |
 | Rarity | Rare |
 
 ## Usage
-
-### Melee Attack
-
-Same as a [diamond sword](https://minecraft.wiki/w/Diamond_Sword).
 
 ### Teleport
 
@@ -31,7 +26,7 @@ An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is consi
 ### Give Command
 
 ```mcfunction
-/give @s minecraft:diamond_sword[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity="rare"]
+/give @s minecraft:stick[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity="rare"]
 ```
 
 ### Loot Table Entry
@@ -58,7 +53,7 @@ An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is consi
             "target": "item_name"
         }
     ],
-    "name": "minecraft:diamond_sword"
+    "name": "minecraft:stick"
 }
 ```
 
