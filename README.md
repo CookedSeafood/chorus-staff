@@ -38,14 +38,14 @@ An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is consi
         {
             "function": "minecraft:set_components",
             "components": {
-            "minecraft:custom_data": {
-                "id": "chorus_staff:chorus_staff"
-            },
-            "minecraft:enchantable": {
-                "value": 15
-            },
-            "minecraft:item_model": "minecraft:diamond_shovel",
-            "minecraft:rarity": "rare"
+                "minecraft:custom_data": {
+                    "id": "chorus_staff:chorus_staff"
+                },
+                "minecraft:enchantable": {
+                    "value": 15
+                },
+                "minecraft:item_model": "minecraft:diamond_shovel",
+                "minecraft:rarity": "rare"
             }
         },
         {
