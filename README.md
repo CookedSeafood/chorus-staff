@@ -26,7 +26,7 @@ An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is consi
 ### Give Command
 
 ```mcfunction
-/give @s minecraft:stick[custom_data={id:"chorus_staff:chorus_staff"},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity="rare"]
+/give @s minecraft:stick[custom_data={id:"chorus_staff:chorus_staff"},enchantable={value:15},item_name={text:"Chorus Staff"},item_model="minecraft:diamond_shovel",rarity="rare"]
 ```
 
 ### Loot Table Entry
@@ -40,6 +40,9 @@ An item where `minecraft:custom_data.id` is "chorus_staff:chorus_staff" is consi
             "components": {
             "minecraft:custom_data": {
                 "id": "chorus_staff:chorus_staff"
+            },
+            "minecraft:enchantable": {
+                "value": 15
             },
             "minecraft:item_model": "minecraft:diamond_shovel",
             "minecraft:rarity": "rare"
