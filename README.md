@@ -13,9 +13,9 @@ A **chorus staff** is a casting utility that is used to teleport the caster forw
 
 Pressing use while holding a chorus staff in main hand teleports the player up to 8 blocks forward and consumes 1 mana. The teleport will end up at a block center before a block with collision or fluids is found.
 
-#### Mana Consumption with Ultilization
+#### Mana Consumption with Mana Efficiency
 
-| Base Mana Consumption | Utilization I | Utilization II | Utilization III | Utilization IV | Utilization V |
+| Base Mana Consumption | Mana Efficiency I | Mana Efficiency II | Mana Efficiency III | Mana Efficiency IV | Mana Efficiency V |
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | 1.0 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5 |
 
